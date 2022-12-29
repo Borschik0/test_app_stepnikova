@@ -10,6 +10,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Color color = const Color(0xffaabbcc);
+  bool selected = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +20,34 @@ class _MainPageState extends State<MainPage> {
       ),
       body: GestureDetector(
         onTap: () => setState(() {
-          color = Color(int.parse(
-              NumberSystemConverter().decToHex().replaceAll('#', '0xff'),),);
+          selected = !selected;
+          color = Color(
+            int.parse(
+              NumberSystemConverter().decToHex().replaceAll('#', '0xff'),
+            ),
+          );
         }),
-        child: Container(
+        child: AnimatedContainer(
           height: double.infinity,
           width: double.infinity,
           color: color,
-          child: const Center(
-            child: Text(
-              'Hey there',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
+          duration: const Duration(seconds: 3),
+          child: Center(
+            child: AnimatedDefaultTextStyle(
+              curve: Curves.easeInOutQuad,
+              style: selected
+                  ? const TextStyle(
+                      fontSize: 34,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )
+                  : const TextStyle(
+                      fontSize: 34,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+              duration: const Duration(seconds: 3),
+              child: const Text('Hey there'),
             ),
           ),
         ),
